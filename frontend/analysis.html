@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分析 — MantleSentry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6">
+        <a href="/" class="text-lg font-bold text-gray-900">MantleSentry</a>
+        <a href="/" class="nav-link">Dashboard</a>
+        <a href="/analysis" class="nav-link active">分析</a>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-4 space-y-4">
+        <!-- Daily Summary -->
+        <div class="card">
+            <div class="card-header"><h2 class="font-semibold">AI 每日摘要</h2></div>
+            <div id="dailySummary" class="text-sm text-gray-700 p-2">加载中...</div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="card">
+                <div class="card-header"><h2 class="font-semibold">交易量趋势</h2></div>
+                <div id="volumeChart" class="h-80"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h2 class="font-semibold">聪明钱收益排行</h2></div>
+                <div id="profitChart" class="h-80"></div>
+            </div>
+        </div>
+
+        <!-- Whale Table -->
+        <div class="card">
+            <div class="card-header"><h2 class="font-semibold">聪明钱详情</h2></div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50 text-gray-600">
+                        <tr><th class="th">地址</th><th class="th">类型</th><th class="th">交易量</th><th class="th">笔数</th><th class="th">AI画像</th></tr>
+                    </thead>
+                    <tbody id="whaleTable" class="divide-y divide-gray-100">
+                        <tr><td colspan="5" class="p-4 text-center text-gray-400">加载中...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/charts.js"></script>
+</body>
+</html>

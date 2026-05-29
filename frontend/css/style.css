@@ -1,0 +1,59 @@
+/* MantleSentry — 朴素白底风格 */
+
+.nav-link {
+    @apply text-sm text-gray-500 hover:text-gray-900 px-2 py-1;
+}
+.nav-link.active {
+    @apply text-gray-900 font-semibold border-b-2 border-gray-900;
+}
+
+.card {
+    @apply bg-white rounded-lg border border-gray-200 shadow-sm;
+}
+.card-header {
+    @apply flex items-center justify-between px-4 py-3 border-b border-gray-100;
+}
+
+.stat-label {
+    @apply block text-xs text-gray-500;
+}
+.stat-value {
+    @apply block text-base font-semibold text-gray-900 mt-0.5;
+}
+
+.badge {
+    @apply text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600;
+}
+.badge-red {
+    @apply text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-semibold;
+}
+.badge-green {
+    @apply text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700;
+}
+
+.th {
+    @apply px-4 py-2 text-left text-xs font-medium uppercase tracking-wider;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+/* Whale tx highlight */
+.tx-whale {
+    @apply bg-red-50 border-l-2 border-red-400;
+}
+
+/* Alert severity */
+.alert-high { @apply border-l-4 border-red-500 bg-red-50; }
+.alert-medium { @apply border-l-4 border-yellow-500 bg-yellow-50; }
+.alert-low { @apply border-l-4 border-gray-300; }
+
+/* Feed animation */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.feed-item-new {
+    animation: slideIn 0.3s ease-out;
+}
