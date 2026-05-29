@@ -36,8 +36,10 @@ async def scan_loop():
             if txs:
                 db = get_db()
                 for tx in txs:
-                    # Classify
+                    # Classify (skip system txs)
                     tx = classify_tx(tx)
+                    if tx is None:
+                        continue
 
                     # Check whale
                     # value_usd needs price data; for now use native * rough price
