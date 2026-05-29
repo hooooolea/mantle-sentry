@@ -12,7 +12,7 @@ def check_anomaly(tx: dict, db_conn) -> list[dict]:
     to_addr = (tx.get("to_address") or "").lower()
     value_usd = tx.get("value_usd", 0)
 
-    # Rule 1: Single tx > 10x historical average
+    # Rule 1: Single tx > 5x historical average
     if from_addr:
         row = db_conn.execute(
             "SELECT total_volume_usd, tx_count FROM addresses WHERE address = ?",
@@ -20,7 +20,7 @@ def check_anomaly(tx: dict, db_conn) -> list[dict]:
         ).fetchone()
         if row and row["tx_count"] > 5:
             avg = row["total_volume_usd"] / row["tx_count"]
-            if avg > 0 and value_usd > avg * 10:
+            if avg > 0 and value_usd > avg * 5:
                 alerts.append({
                     "alert_type": "large_tx",
                     "address": from_addr,
@@ -29,7 +29,7 @@ def check_anomaly(tx: dict, db_conn) -> list[dict]:
                     "severity": "high",
                 })
 
-    # Rule 2: New address first tx > $50K
+    # Rule 2: New address first tx > $5K
     for addr in [from_addr, to_addr]:
         if not addr:
             continue
@@ -37,7 +37,7 @@ def check_anomaly(tx: dict, db_conn) -> list[dict]:
             "SELECT tx_count FROM addresses WHERE address = ?",
             (addr,)
         ).fetchone()
-        if row is None and value_usd > 50000:
+        if row is None and value_usd > 5000:
             alerts.append({
                 "alert_type": "new_whale",
                 "address": addr,

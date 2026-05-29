@@ -43,10 +43,10 @@ function alertItemHTML(a) {
 
 function whaleItemHTML(w, rank) {
     return `
-        <a href="/address/${w.address}" class="flex items-center justify-between p-3 hover:bg-gray-50">
+        <a href="/address/${w.address}" class="flex items-center justify-between p-3 hover:bg-gray-50 group">
             <div class="flex items-center gap-2">
                 <span class="text-xs text-gray-400 w-5">${rank}</span>
-                <span class="font-mono text-xs">${w.address.slice(0, 10)}...</span>
+                <span class="font-mono text-xs group-hover:text-blue-600">${w.address.slice(0, 10)}...</span>
                 <span class="badge">${w.category || '-'}</span>
             </div>
             <span class="text-sm font-semibold">$${(w.total_volume_usd || 0).toLocaleString()}</span>

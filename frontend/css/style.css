@@ -57,3 +57,32 @@
 .feed-item-new {
     animation: slideIn 0.3s ease-out;
 }
+
+/* Clickable hint */
+.cursor-pointer:hover {
+    background-color: #f9fafb;
+}
+a[href^="/address/"]:hover .font-mono,
+.cursor-pointer:hover .font-mono {
+    color: #2563eb;
+}
+.feed-item-new::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid #9ca3af;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+.feed-item-new {
+    position: relative;
+}
+.feed-item-new:hover::after {
+    opacity: 1;
+}
