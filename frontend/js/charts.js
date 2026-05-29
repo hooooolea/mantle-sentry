@@ -25,11 +25,11 @@ async function init() {
         if (whales.length) {
             tbody.innerHTML = whales.map(w => `
                 <tr class="hover:bg-gray-50 cursor-pointer" onclick="window.location.href='/address/${w.address}'">
-                    <td class="px-4 py-2 font-mono text-xs">${w.address.slice(0, 12)}...</td>
+                    <td class="px-4 py-2 font-mono text-xs truncate">${w.address.slice(0, 14)}...</td>
                     <td class="px-4 py-2"><span class="badge">${w.category || '-'}</span></td>
-                    <td class="px-4 py-2 font-semibold">$${(w.total_volume_usd||0).toLocaleString()}</td>
-                    <td class="px-4 py-2">${w.tx_count || 0}</td>
-                    <td class="px-4 py-2 text-xs text-gray-600 max-w-xs truncate">${w.ai_profile || '-'}</td>
+                    <td class="px-4 py-2 font-semibold text-right">$${(w.total_volume_usd||0).toLocaleString()}</td>
+                    <td class="px-4 py-2 text-right">${w.tx_count || 0}</td>
+                    <td class="px-4 py-2 text-xs text-gray-600 truncate">${w.ai_profile || '-'}</td>
                 </tr>
             `).join('');
         }
