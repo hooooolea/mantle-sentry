@@ -79,7 +79,7 @@ async def scan_loop():
                             await broadcast({"type": "alert", "data": a})
 
                     # Broadcast and AI analyze
-                    if tx["value_usd"] >= 100:
+                    if tx["value_usd"] >= 1000:
                         # AI analysis for meaningful transactions
                         asyncio.create_task(_ai_and_broadcast(tx, db))
                     else:
