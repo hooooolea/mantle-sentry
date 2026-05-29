@@ -3,6 +3,7 @@
 import asyncio
 import logging
 from web3 import Web3
+from web3.middleware import ExtraDataToPOAMiddleware
 
 from backend.config import MANTLE_RPC_URL, MANTLE_CHAIN_ID
 
@@ -12,10 +13,13 @@ logger = logging.getLogger(__name__)
 class BlockScanner:
     def __init__(self):
         self.w3 = Web3(Web3.HTTPProvider(MANTLE_RPC_URL))
+        # Mantle is a POA chain — inject middleware
+        self.w3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
         if not self.w3.is_connected():
             raise ConnectionError(f"Cannot connect to Mantle RPC: {MANTLE_RPC_URL}")
-        self.last_scanned_block = 0
-        logger.info(f"Connected to Mantle (chain {MANTLE_CHAIN_ID}), latest block: {self.w3.eth.block_number}")
+        # Start from latest block (skip historical)
+        self.last_scanned_block = self.w3.eth.block_number
+        logger.info(f"Connected to Mantle (chain {MANTLE_CHAIN_ID}), latest block: {self.last_scanned_block}")
 
     def get_latest_block(self) -> int:
         return self.w3.eth.block_number
