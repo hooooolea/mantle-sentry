@@ -15,6 +15,7 @@ from backend.analyzer.whale_detector import is_whale_transaction, update_address
 from backend.analyzer.anomaly import check_anomaly, save_alerts
 from backend.analyzer.ai_analyzer import analyze_transaction
 from backend.config import SCAN_INTERVAL_SECONDS, WHALE_THRESHOLD_USD
+from backend.scanner.price_fetcher import get_mnt_price
 from backend.api import transactions, addresses, alerts, summary
 from backend.ws.handler import router as ws_router, broadcast
 
@@ -34,6 +35,8 @@ async def scan_loop():
         try:
             txs = await scanner.scan_new_blocks()
             if txs:
+                # Get MNT price once per scan cycle
+                mnt_price = await get_mnt_price()
                 db = get_db()
                 for tx in txs:
                     # Classify (skip system txs)
@@ -42,8 +45,7 @@ async def scan_loop():
                         continue
 
                     # Check whale
-                    # value_usd needs price data; for now use native * rough price
-                    tx.setdefault("value_usd", tx["value_native"] * 0.8)  # placeholder
+                    tx.setdefault("value_usd", tx["value_native"] * mnt_price)
                     tx["is_whale_tx"] = is_whale_transaction(tx, WHALE_THRESHOLD_USD)
 
                     # Store
