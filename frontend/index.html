@@ -50,30 +50,20 @@
         </div>
     </div>
 
-    <!-- Main: 2 equal columns -->
+    <!-- Main: 2 columns — Feed+Alerts left, Whale right -->
     <main class="max-w-7xl mx-auto px-6 py-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
             
-            <!-- Left: Real-time Feed -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="font-semibold">实时交易 Feed</h2>
-                    <span class="text-xs text-gray-500" id="txCount">0 笔</span>
-                </div>
-                <div id="txFeed" class="divide-y divide-gray-100 max-h-[520px] overflow-y-auto">
-                    <div class="card-body text-center text-gray-400 text-sm">等待区块数据...</div>
-                </div>
-            </div>
-
-            <!-- Right: Whale + Alerts -->
+            <!-- Left column: Feed + Alerts stacked -->
             <div class="flex flex-col gap-5">
-                <!-- Whale Top 10 -->
+                <!-- Real-time Feed -->
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="font-semibold">聪明钱 Top 10</h2>
+                        <h2 class="font-semibold">实时交易 Feed</h2>
+                        <span class="text-xs text-gray-500" id="txCount">0 笔</span>
                     </div>
-                    <div id="whaleList" class="divide-y divide-gray-100">
-                        <div class="card-body text-center text-gray-400 text-sm">加载中...</div>
+                    <div id="txFeed" class="divide-y divide-gray-100 max-h-[400px] overflow-y-auto">
+                        <div class="card-body text-center text-gray-400 text-sm">等待区块数据...</div>
                     </div>
                 </div>
 
@@ -83,9 +73,19 @@
                         <h2 class="font-semibold">异常预警</h2>
                         <span class="badge-red hidden" id="alertBadge">0</span>
                     </div>
-                    <div id="alertList" class="divide-y divide-gray-100 max-h-60 overflow-y-auto">
+                    <div id="alertList" class="divide-y divide-gray-100 max-h-[300px] overflow-y-auto">
                         <div class="card-body text-center text-gray-400 text-sm">暂无预警</div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Right column: Whale Top 10 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="font-semibold">聪明钱 Top 10</h2>
+                </div>
+                <div id="whaleList" class="divide-y divide-gray-100">
+                    <div class="card-body text-center text-gray-400 text-sm">加载中...</div>
                 </div>
             </div>
         </div>
