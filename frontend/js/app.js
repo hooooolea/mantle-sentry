@@ -101,6 +101,25 @@ async function loadInitialData() {
             document.getElementById('summaryBanner').classList.remove('hidden');
         }
     } catch (e) {}
+
+    // Stats bar
+    try {
+        const [txResp, whaleResp, alertResp] = await Promise.all([
+            fetch('/api/transactions?limit=200'),
+            fetch('/api/whales?limit=50'),
+            fetch('/api/alerts?limit=50'),
+        ]);
+        const txData = await txResp.json();
+        const whaleData = await whaleResp.json();
+        const alertData = await alertResp.json();
+
+        const txs = txData.transactions || [];
+        const totalVolume = txs.reduce((sum, t) => sum + (t.value_usd || 0), 0);
+        document.getElementById('statTxCount').textContent = txs.length;
+        document.getElementById('statVolume').textContent = '$' + totalVolume.toLocaleString(undefined, {maximumFractionDigits: 0});
+        document.getElementById('statAddresses').textContent = (whaleData.whales || []).length;
+        document.getElementById('statAlerts').textContent = (alertData.alerts || []).length;
+    } catch (e) { console.error('Load stats:', e); }
 }
 
 // --- WebSocket handler ---

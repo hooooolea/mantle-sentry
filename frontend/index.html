@@ -28,11 +28,33 @@
         <p class="text-sm text-blue-800" id="summaryText">加载中...</p>
     </div>
 
+    <!-- Stats Bar -->
+    <div class="max-w-7xl mx-auto px-4 pt-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="card px-4 py-3">
+                <div class="stat-label">总交易数</div>
+                <div class="stat-value" id="statTxCount">-</div>
+            </div>
+            <div class="card px-4 py-3">
+                <div class="stat-label">总交易量</div>
+                <div class="stat-value" id="statVolume">-</div>
+            </div>
+            <div class="card px-4 py-3">
+                <div class="stat-label">活跃地址</div>
+                <div class="stat-value" id="statAddresses">-</div>
+            </div>
+            <div class="card px-4 py-3">
+                <div class="stat-label">异常预警</div>
+                <div class="stat-value" id="statAlerts">-</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Grid -->
-    <main class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <main class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
         
-        <!-- Left: Real-time Feed -->
-        <div class="lg:col-span-2">
+        <!-- Left: Real-time Feed (3 cols) -->
+        <div class="lg:col-span-3">
             <div class="card">
                 <div class="card-header">
                     <h2 class="font-semibold">实时交易 Feed</h2>
@@ -44,8 +66,8 @@
             </div>
         </div>
 
-        <!-- Right: Panels -->
-        <div class="space-y-4">
+        <!-- Right: Sidebar (2 cols) -->
+        <div class="lg:col-span-2 space-y-4">
             <!-- Whale Top 10 -->
             <div class="card">
                 <div class="card-header">
