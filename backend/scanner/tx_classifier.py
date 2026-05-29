@@ -47,6 +47,12 @@ def is_system_tx(tx: dict) -> bool:
     if to_addr.startswith("0x420000000000000000000000000000000000") and tx.get("value_native", 0) == 0:
         return True
 
+    # Filter 0-value contract calls to unknown contracts (noise)
+    if tx.get("value_native", 0) == 0 and to_addr not in KNOWN_PROTOCOLS and to_addr not in TOKENS:
+        input_data = tx.get("input_data", "0x")
+        if input_data and len(input_data) > 10:
+            return True
+
     return False
 
 
