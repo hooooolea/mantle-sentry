@@ -19,7 +19,7 @@ function txItemHTML(tx) {
     const ai = tx.ai_analysis ? `<div class="text-xs text-blue-600 mt-1">AI: ${tx.ai_analysis}</div>` : '';
 
     return `
-        <div class="p-3 hover:bg-gray-50 cursor-pointer feed-item-new ${whaleClass}"
+        <div class="card-body hover:bg-gray-50 cursor-pointer feed-item-new ${whaleClass}"
              onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
             <div class="flex justify-between items-center">
                 <span class="font-mono text-xs text-gray-600">${hash}...</span>
@@ -34,7 +34,7 @@ function txItemHTML(tx) {
 function alertItemHTML(a) {
     const sevClass = `alert-${a.severity || 'low'}`;
     return `
-        <div class="p-3 ${sevClass}">
+        <div class="card-body ${sevClass}">
             <div class="text-sm font-medium">${a.description || a.alert_type}</div>
             <div class="text-xs text-gray-500 mt-1">${a.address ? a.address.slice(0, 12) + '...' : ''} · ${a.severity}</div>
         </div>
@@ -43,7 +43,7 @@ function alertItemHTML(a) {
 
 function whaleItemHTML(w, rank) {
     return `
-        <a href="/address/${w.address}" class="flex items-center justify-between p-3 hover:bg-gray-50 group">
+        <a href="/address/${w.address}" class="flex items-center justify-between card-body hover:bg-gray-50 group">
             <div class="flex items-center gap-2">
                 <span class="text-xs text-gray-400 w-5">${rank}</span>
                 <span class="font-mono text-xs group-hover:text-blue-600">${w.address.slice(0, 10)}...</span>

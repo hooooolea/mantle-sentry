@@ -13,6 +13,9 @@
 .card-header {
     @apply flex items-center justify-between px-4 py-3 border-b border-gray-100;
 }
+.card-body {
+    @apply px-6 py-3;
+}
 
 .stat-label {
     @apply block text-xs text-gray-500;
@@ -27,38 +30,31 @@
 .badge-red {
     @apply text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-semibold;
 }
-.badge-green {
-    @apply text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700;
-}
 
 .th {
     @apply px-4 py-2 text-left text-xs font-medium uppercase tracking-wider;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
 
-/* Whale tx highlight */
 .tx-whale {
     @apply bg-red-50 border-l-2 border-red-400;
 }
 
-/* Alert severity */
 .alert-high { @apply border-l-4 border-red-500 bg-red-50; }
 .alert-medium { @apply border-l-4 border-yellow-500 bg-yellow-50; }
 .alert-low { @apply border-l-4 border-gray-300; }
 
-/* Feed animation */
 @keyframes slideIn {
     from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: translateY(0); }
 }
 .feed-item-new {
     animation: slideIn 0.3s ease-out;
+    position: relative;
 }
 
-/* Clickable hint */
 .cursor-pointer:hover {
     background-color: #f9fafb;
 }
@@ -79,9 +75,6 @@ a[href^="/address/"]:hover .font-mono,
     border-bottom: 3px solid transparent;
     opacity: 0;
     transition: opacity 0.15s;
-}
-.feed-item-new {
-    position: relative;
 }
 .feed-item-new:hover::after {
     opacity: 1;
