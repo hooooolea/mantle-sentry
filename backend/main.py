@@ -78,9 +78,9 @@ async def scan_loop():
                         for a in anomalies:
                             await broadcast({"type": "alert", "data": a})
 
-                    # Broadcast whale tx
-                    if tx["is_whale_tx"]:
-                        # AI analysis (non-blocking)
+                    # Broadcast and AI analyze
+                    if tx["value_usd"] >= 100:
+                        # AI analysis for meaningful transactions
                         asyncio.create_task(_ai_and_broadcast(tx, db))
                     else:
                         await broadcast({
@@ -90,8 +90,10 @@ async def scan_loop():
                                 "from": tx["from_address"],
                                 "to": tx.get("to_address"),
                                 "value": tx["value_native"],
+                                "value_usd": tx.get("value_usd", 0),
                                 "token": tx.get("token", "MNT"),
                                 "type": tx["tx_type"],
+                                "protocol": tx.get("protocol", "unknown"),
                             }
                         })
 

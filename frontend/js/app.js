@@ -12,17 +12,20 @@ function txItemHTML(tx) {
     const from = (tx.from || tx.from_address || '').slice(0, 10);
     const to = (tx.to || tx.to_address || '').slice(0, 10);
     const value = tx.value || tx.value_native || 0;
+    const valueUsd = tx.value_usd || (value * 0.85);
     const token = tx.token || 'MNT';
-    const ai = tx.ai_analysis ? `<div class="text-xs text-blue-600 mt-1">${tx.ai_analysis}</div>` : '';
+    const txType = tx.type || tx.tx_type || '';
+    const protocol = tx.protocol && tx.protocol !== 'unknown' ? `<span class="badge">${tx.protocol}</span>` : '';
+    const ai = tx.ai_analysis ? `<div class="text-xs text-blue-600 mt-1">AI: ${tx.ai_analysis}</div>` : '';
 
     return `
         <div class="p-3 hover:bg-gray-50 cursor-pointer feed-item-new ${whaleClass}"
              onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
             <div class="flex justify-between items-center">
                 <span class="font-mono text-xs text-gray-600">${hash}...</span>
-                <span class="text-sm font-semibold ${tx.is_whale ? 'text-red-600' : 'text-gray-800'}">${value.toFixed(4)} ${token}</span>
+                <span class="text-sm font-semibold ${valueUsd >= 10000 ? 'text-red-600' : 'text-gray-800'}">${value.toFixed(4)} ${token} <span class="text-xs text-gray-400">($${valueUsd.toFixed(2)})</span></span>
             </div>
-            <div class="text-xs text-gray-500 mt-1">${from}... → ${to}... · ${tx.type || tx.tx_type || ''} · ${time}</div>
+            <div class="text-xs text-gray-500 mt-1">${from}... → ${to}... · ${txType} ${protocol} · ${time}</div>
             ${ai}
         </div>
     `;
