@@ -30,62 +30,62 @@
 
     <!-- Stats Bar -->
     <div class="max-w-7xl mx-auto px-4 pt-4">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div class="card px-4 py-3">
+        <div class="grid grid-cols-4 gap-3">
+            <div class="card px-4 py-3 text-center">
                 <div class="stat-label">总交易数</div>
                 <div class="stat-value" id="statTxCount">-</div>
             </div>
-            <div class="card px-4 py-3">
+            <div class="card px-4 py-3 text-center">
                 <div class="stat-label">总交易量</div>
                 <div class="stat-value" id="statVolume">-</div>
             </div>
-            <div class="card px-4 py-3">
+            <div class="card px-4 py-3 text-center">
                 <div class="stat-label">活跃地址</div>
                 <div class="stat-value" id="statAddresses">-</div>
             </div>
-            <div class="card px-4 py-3">
+            <div class="card px-4 py-3 text-center">
                 <div class="stat-label">异常预警</div>
                 <div class="stat-value" id="statAlerts">-</div>
             </div>
         </div>
     </div>
 
-    <!-- Main Grid -->
-    <main class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
-        
-        <!-- Left: Real-time Feed (3 cols) -->
-        <div class="lg:col-span-3">
+    <!-- Main: 2 equal columns -->
+    <main class="max-w-7xl mx-auto px-4 py-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            
+            <!-- Left: Real-time Feed -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="font-semibold">实时交易 Feed</h2>
                     <span class="text-xs text-gray-500" id="txCount">0 笔</span>
                 </div>
-                <div id="txFeed" class="divide-y divide-gray-100 max-h-[600px] overflow-y-auto">
+                <div id="txFeed" class="divide-y divide-gray-100 max-h-[520px] overflow-y-auto">
                     <div class="p-4 text-center text-gray-400 text-sm">等待区块数据...</div>
                 </div>
             </div>
-        </div>
 
-        <!-- Right: Sidebar (2 cols) -->
-        <div class="lg:col-span-2 space-y-4">
-            <!-- Whale Top 10 -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="font-semibold">聪明钱 Top 10</h2>
+            <!-- Right: Whale + Alerts stacked -->
+            <div class="flex flex-col gap-4">
+                <!-- Whale Top 10 -->
+                <div class="card flex-1">
+                    <div class="card-header">
+                        <h2 class="font-semibold">聪明钱 Top 10</h2>
+                    </div>
+                    <div id="whaleList" class="divide-y divide-gray-100">
+                        <div class="p-3 text-center text-gray-400 text-sm">加载中...</div>
+                    </div>
                 </div>
-                <div id="whaleList" class="divide-y divide-gray-100">
-                    <div class="p-3 text-center text-gray-400 text-sm">加载中...</div>
-                </div>
-            </div>
 
-            <!-- Alerts -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="font-semibold">异常预警</h2>
-                    <span class="badge-red hidden" id="alertBadge">0</span>
-                </div>
-                <div id="alertList" class="divide-y divide-gray-100 max-h-80 overflow-y-auto">
-                    <div class="p-3 text-center text-gray-400 text-sm">暂无预警</div>
+                <!-- Alerts -->
+                <div class="card flex-1">
+                    <div class="card-header">
+                        <h2 class="font-semibold">异常预警</h2>
+                        <span class="badge-red hidden" id="alertBadge">0</span>
+                    </div>
+                    <div id="alertList" class="divide-y divide-gray-100 max-h-60 overflow-y-auto">
+                        <div class="p-3 text-center text-gray-400 text-sm">暂无预警</div>
+                    </div>
                 </div>
             </div>
         </div>
