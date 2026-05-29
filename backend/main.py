@@ -16,7 +16,7 @@ from backend.analyzer.anomaly import check_anomaly, save_alerts
 from backend.analyzer.ai_analyzer import analyze_transaction
 from backend.config import SCAN_INTERVAL_SECONDS, WHALE_THRESHOLD_USD
 from backend.api import transactions, addresses, alerts, summary
-from backend.ws.handler import ws_router, broadcast
+from backend.ws.handler import router as ws_router, broadcast
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(message)s")
 logger = logging.getLogger("mantle_sentry")
