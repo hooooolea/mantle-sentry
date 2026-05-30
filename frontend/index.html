@@ -10,7 +10,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
     <!-- Nav -->
-    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
         <div class="flex items-center gap-2">
             <a href="/" class="text-lg font-bold text-gray-900 mr-4">MantleSentry</a>
             <a href="/" class="nav-link active">Dashboard</a>
@@ -30,7 +30,7 @@
 
     <div class="max-w-7xl mx-auto px-6 py-6 space-y-6">
 
-        <!-- Stats Bar -->
+        <!-- Stats Row -->
         <div class="grid grid-cols-4 gap-5">
             <div class="stat-card">
                 <div class="stat-label">⚡ 总交易数</div>
@@ -50,42 +50,59 @@
             </div>
         </div>
 
-        <!-- Main: 3:1 ratio -->
+        <!-- Main Grid -->
         <div class="grid grid-cols-4 gap-6">
             
-            <!-- Feed (3 cols) -->
-            <div class="col-span-3 flex flex-col gap-6">
+            <!-- Left: Feed + Alerts -->
+            <div class="col-span-3 space-y-6">
+                <!-- Feed Card -->
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="font-semibold">实时交易 Feed</h2>
+                        <h2 class="font-semibold text-base">实时交易 Feed</h2>
                         <div class="flex items-center gap-3">
                             <span class="text-xs text-gray-500" id="txCount">0 笔</span>
-                            <button id="pauseBtn" onclick="togglePause()" class="text-xs px-2 py-0.5 rounded border border-gray-300 hover:bg-gray-100">暂停</button>
+                            <button id="pauseBtn" onclick="togglePause()" class="text-xs px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors">暂停</button>
                         </div>
                     </div>
-                    <div id="txFeed" class="divide-y divide-gray-100 max-h-[400px] overflow-y-auto">
-                        <div class="card-body text-center text-gray-400 text-sm">等待区块数据...</div>
+                    <!-- Table Header -->
+                    <div class="grid grid-cols-12 gap-3 px-6 py-2.5 bg-gray-50/80 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
+                        <div class="col-span-2">交易哈希</div>
+                        <div class="col-span-4">交易路径</div>
+                        <div class="col-span-2 text-right">金额</div>
+                        <div class="col-span-2">类型</div>
+                        <div class="col-span-2 text-right">时间</div>
+                    </div>
+                    <div id="txFeed" class="max-h-[420px] overflow-y-auto">
+                        <div class="card-body text-center text-gray-400 text-sm py-10">等待区块数据...</div>
                     </div>
                 </div>
 
+                <!-- Alerts Card -->
                 <div class="card" id="alertSection">
                     <div class="card-header">
-                        <h2 class="font-semibold">异常预警</h2>
+                        <h2 class="font-semibold text-base">异常预警</h2>
                         <span class="badge-red hidden" id="alertBadge">0</span>
                     </div>
-                    <div id="alertList" class="divide-y divide-gray-100 max-h-[260px] overflow-y-auto">
-                        <div class="card-body text-center text-gray-400 text-sm">暂无预警</div>
+                    <div id="alertList" class="max-h-[260px] overflow-y-auto divide-y divide-gray-100">
+                        <div class="card-body text-center text-gray-400 text-sm py-10">暂无预警</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Whale (1 col) -->
+            <!-- Right: Whale Card -->
             <div class="card">
                 <div class="card-header">
-                    <h2 class="font-semibold">聪明钱 Top 10</h2>
+                    <h2 class="font-semibold text-base">聪明钱 Top 10</h2>
+                </div>
+                <!-- Table Header -->
+                <div class="grid grid-cols-12 gap-2 px-5 py-2.5 bg-gray-50/80 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
+                    <div class="col-span-1">#</div>
+                    <div class="col-span-4">地址</div>
+                    <div class="col-span-2">类型</div>
+                    <div class="col-span-5 text-right">交易量</div>
                 </div>
                 <div id="whaleList" class="divide-y divide-gray-100">
-                    <div class="card-body text-center text-gray-400 text-sm">加载中...</div>
+                    <div class="card-body text-center text-gray-400 text-sm py-10">加载中...</div>
                 </div>
             </div>
         </div>

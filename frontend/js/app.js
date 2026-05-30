@@ -14,18 +14,16 @@ function amountClass(usd) {
 
 // --- Mini sparkline SVG ---
 function miniSparkline() {
-    const w = 60, h = 20;
+    const w = 50, h = 16;
     const pts = [0.3, 0.5, 0.4, 0.7, 0.6, 0.9, 1.0].map((v, i) =>
-        `${i * 10},${h - v * (h - 2)}`).join(' ');
-    return `<svg width="${w}" height="${h}" class="opacity-70">
+        `${i * 8},${h - v * (h - 2)}`).join(' ');
+    return `<svg width="${w}" height="${h}" class="opacity-60">
         <polyline points="${pts}" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
     </svg>`;
 }
 
-// --- Render helpers ---
-
+// --- Feed item (table row style) ---
 function txItemHTML(tx) {
-    const whaleClass = tx.is_whale ? 'tx-whale' : '';
     const time = tx.timestamp ? new Date(tx.timestamp * 1000).toLocaleTimeString() : new Date().toLocaleTimeString();
     const hash = (tx.tx_hash || '').slice(0, 10);
     const from = (tx.from || tx.from_address || '').slice(0, 8);
@@ -34,25 +32,36 @@ function txItemHTML(tx) {
     const valueUsd = tx.value_usd || (value * 0.85);
     const token = tx.token || 'MNT';
     const txType = tx.type || tx.tx_type || '';
-    const protocol = tx.protocol && tx.protocol !== 'unknown' ? ` · ${tx.protocol}` : '';
-    const ai = tx.ai_analysis ? `<div class="text-xs text-blue-600 mt-1">AI: ${tx.ai_analysis}</div>` : '';
+    const protocol = tx.protocol && tx.protocol !== 'unknown' ? tx.protocol : '';
+    const ai = tx.ai_analysis ? `<div class="text-xs text-blue-600 mt-1 pl-2">AI: ${tx.ai_analysis}</div>` : '';
 
     return `
-        <div class="card-body hover:bg-gray-50 cursor-pointer feed-item-new ${whaleClass}"
-             onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
-            <div class="flex items-center gap-3">
-                <span class="font-mono text-xs text-gray-400 w-24 shrink-0" title="${tx.tx_hash}">${hash}...</span>
-                <span class="text-xs text-gray-500 flex-1 truncate">${from} → ${to} · ${txType}${protocol}</span>
-                <span class="text-xs text-gray-400 shrink-0">${time}</span>
-                <span class="text-sm ${amountClass(valueUsd)} shrink-0 text-right w-32">
-                    ${value.toFixed(2)} ${token}<br><span class="text-xs">$${valueUsd.toFixed(0)}</span>
-                </span>
+        <div class="feed-item-new cursor-pointer" onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
+            <div class="grid grid-cols-12 gap-3 items-center px-6 py-3">
+                <div class="col-span-2">
+                    <span class="font-mono text-xs text-gray-400" title="${tx.tx_hash}">${hash}...</span>
+                </div>
+                <div class="col-span-4">
+                    <span class="text-xs text-gray-600">${from} → ${to}</span>
+                </div>
+                <div class="col-span-2 text-right">
+                    <div class="text-sm ${amountClass(valueUsd)}">${value.toFixed(2)} ${token}</div>
+                    <div class="text-xs text-gray-400">$${valueUsd.toFixed(0)}</div>
+                </div>
+                <div class="col-span-2">
+                    <span class="badge text-xs">${txType}</span>
+                    ${protocol ? `<span class="badge text-xs ml-1">${protocol}</span>` : ''}
+                </div>
+                <div class="col-span-2 text-right">
+                    <span class="text-xs text-gray-400">${time}</span>
+                </div>
             </div>
             ${ai}
         </div>
     `;
 }
 
+// --- Alert item ---
 function alertItemHTML(a) {
     const sevClass = `alert-${a.severity || 'low'}`;
     const time = a.created_at ? new Date(a.created_at).toLocaleTimeString() : '';
@@ -60,16 +69,17 @@ function alertItemHTML(a) {
         ? `<a href="/address/${a.address}" class="text-blue-600 hover:underline">${a.address.slice(0, 12)}...</a>`
         : '';
     return `
-        <div class="card-body ${sevClass}">
-            <div class="flex justify-between">
+        <div class="px-6 py-3 ${sevClass}">
+            <div class="flex justify-between items-start">
                 <span class="text-sm font-medium">${a.description || a.alert_type}</span>
-                <span class="text-xs text-gray-400 shrink-0">${time}</span>
+                <span class="text-xs text-gray-400 shrink-0 ml-3">${time}</span>
             </div>
             <div class="text-xs text-gray-500 mt-1">${addrLink} · ${a.severity}</div>
         </div>
     `;
 }
 
+// --- Whale item (table row style) ---
 function whaleItemHTML(w, rank) {
     const addr = w.address.slice(0, 10);
     const prevRank = prevWhales[w.address];
@@ -82,16 +92,20 @@ function whaleItemHTML(w, rank) {
     const vol = w.total_volume_usd || 0;
 
     return `
-        <a href="/address/${w.address}" class="flex items-center justify-between card-body hover:bg-gray-50 group">
-            <div class="flex items-center gap-2 min-w-0">
-                <span class="text-xs text-gray-400 w-5 shrink-0">${rank}</span>
+        <a href="/address/${w.address}" class="grid grid-cols-12 gap-2 items-center px-5 py-3 hover:bg-gray-50/80 transition-colors group">
+            <div class="col-span-1 flex items-center gap-1">
+                <span class="text-xs text-gray-400 font-medium">${rank}</span>
                 ${rankChange}
-                <span class="font-mono text-xs group-hover:text-blue-600 truncate">${addr}...</span>
-                <span class="badge shrink-0">${w.category || '-'}</span>
             </div>
-            <div class="flex items-center gap-2 shrink-0">
+            <div class="col-span-4">
+                <span class="font-mono text-xs group-hover:text-blue-600 transition-colors">${addr}...</span>
+            </div>
+            <div class="col-span-2">
+                <span class="badge">${w.category || '-'}</span>
+            </div>
+            <div class="col-span-5 flex items-center justify-end gap-2">
                 ${miniSparkline()}
-                <span class="text-sm font-semibold w-20 text-right">$${vol.toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
+                <span class="text-sm font-semibold text-gray-900 w-24 text-right">$${vol.toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
             </div>
         </a>
     `;
