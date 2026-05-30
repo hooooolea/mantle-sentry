@@ -28,52 +28,63 @@
         <span id="alertBannerCount">0</span> 条新预警，点击查看
     </div>
 
-    <div class="max-w-7xl mx-auto px-6 py-6 space-y-6">
+    <div class="max-w-[1400px] mx-auto px-6 py-5 space-y-5">
 
         <!-- Stats Row -->
-        <div class="grid grid-cols-4 gap-5">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="stat-card">
-                <div class="stat-label">⚡ 总交易数</div>
-                <div class="stat-value" id="statTxCount">-</div>
+                <div class="stat-icon stat-icon-indigo">⚡</div>
+                <div>
+                    <div class="stat-label">总交易数</div>
+                    <div class="stat-value" id="statTxCount">-</div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">💰 总交易量</div>
-                <div class="stat-value" id="statVolume">-</div>
+                <div class="stat-icon stat-icon-emerald">💰</div>
+                <div>
+                    <div class="stat-label">总交易量</div>
+                    <div class="stat-value" id="statVolume">-</div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">👥 活跃地址</div>
-                <div class="stat-value" id="statAddresses">-</div>
+                <div class="stat-icon stat-icon-blue">👥</div>
+                <div>
+                    <div class="stat-label">活跃地址</div>
+                    <div class="stat-value" id="statAddresses">-</div>
+                </div>
             </div>
             <div class="stat-card-alert" onclick="document.getElementById('alertSection').scrollIntoView({behavior:'smooth'})">
-                <div class="stat-label">⚠️ 异常预警</div>
-                <div class="stat-value" id="statAlerts">-</div>
+                <div class="stat-icon stat-icon-red">⚠️</div>
+                <div>
+                    <div class="stat-label">异常预警</div>
+                    <div class="stat-value" id="statAlerts">-</div>
+                </div>
             </div>
         </div>
 
         <!-- Main Grid -->
-        <div class="grid grid-cols-4 gap-6">
-            
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
             <!-- Left: Feed + Alerts -->
-            <div class="col-span-3 space-y-6">
+            <div class="lg:col-span-2 space-y-5">
                 <!-- Feed Card -->
                 <div class="card">
                     <div class="card-header">
                         <h2 class="font-semibold text-base">实时交易 Feed</h2>
                         <div class="flex items-center gap-3">
-                            <span class="text-xs text-gray-500" id="txCount">0 笔</span>
-                            <button id="pauseBtn" onclick="togglePause()" class="text-xs px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors">暂停</button>
+                            <span class="text-xs text-gray-500 font-mono-data" id="txCount">0 笔</span>
+                            <button id="pauseBtn" onclick="togglePause()" class="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors text-gray-500">暂停</button>
                         </div>
                     </div>
                     <!-- Table Header -->
-                    <div class="grid grid-cols-12 gap-3 px-8 py-3 bg-gray-50/80 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
+                    <div class="table-header grid-cols-12 gap-3">
                         <div class="col-span-2">交易哈希</div>
                         <div class="col-span-4">交易路径</div>
                         <div class="col-span-2 text-right">金额</div>
                         <div class="col-span-2">类型</div>
                         <div class="col-span-2 text-right">时间</div>
                     </div>
-                    <div id="txFeed" class="max-h-[420px] overflow-y-auto">
-                        <div class="card-body text-center text-gray-400 text-sm py-10">等待区块数据...</div>
+                    <div id="txFeed" class="max-h-[420px] overflow-y-auto divide-y divide-gray-100/80">
+                        <div class="px-6 py-10 text-center text-gray-400 text-sm">等待区块数据...</div>
                     </div>
                 </div>
 
@@ -83,8 +94,8 @@
                         <h2 class="font-semibold text-base">异常预警</h2>
                         <span class="badge-red hidden" id="alertBadge">0</span>
                     </div>
-                    <div id="alertList" class="max-h-[260px] overflow-y-auto divide-y divide-gray-100">
-                        <div class="card-body text-center text-gray-400 text-sm py-10">暂无预警</div>
+                    <div id="alertList" class="max-h-[280px] overflow-y-auto divide-y divide-gray-100/80">
+                        <div class="px-6 py-10 text-center text-gray-400 text-sm">暂无预警</div>
                     </div>
                 </div>
             </div>
@@ -95,14 +106,14 @@
                     <h2 class="font-semibold text-base">聪明钱 Top 10</h2>
                 </div>
                 <!-- Table Header -->
-                <div class="grid grid-cols-12 gap-2 px-6 py-3 bg-gray-50/80 text-xs font-medium text-gray-500 uppercase tracking-wide border-b border-gray-100">
+                <div class="table-header grid-cols-12 gap-2">
                     <div class="col-span-1">#</div>
                     <div class="col-span-4">地址</div>
                     <div class="col-span-2">类型</div>
                     <div class="col-span-5 text-right">交易量</div>
                 </div>
-                <div id="whaleList" class="divide-y divide-gray-100">
-                    <div class="card-body text-center text-gray-400 text-sm py-10">加载中...</div>
+                <div id="whaleList" class="divide-y divide-gray-100/80">
+                    <div class="px-6 py-10 text-center text-gray-400 text-sm">加载中...</div>
                 </div>
             </div>
         </div>
