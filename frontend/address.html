@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
-    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
         <div class="flex items-center gap-2">
             <a href="/" class="text-lg font-bold text-gray-900 mr-4">MantleSentry</a>
             <a href="/" class="nav-link">Dashboard</a>
@@ -23,7 +23,7 @@
     <main class="max-w-5xl mx-auto px-6 py-6 space-y-6">
         <!-- Back link -->
         <div class="flex items-center gap-2 text-sm text-gray-500">
-            <a href="/" class="hover:text-blue-600">← 返回 Dashboard</a>
+            <a href="/" class="hover:text-blue-600 transition-colors">← 返回 Dashboard</a>
         </div>
 
         <!-- Profile Card -->
@@ -31,63 +31,110 @@
             <div class="card-header">
                 <div>
                     <h1 class="text-lg font-bold" id="addrLabel">地址详情</h1>
-                    <p class="text-xs text-gray-500 font-mono mt-1" id="addrHash"></p>
+                    <p class="text-xs text-gray-500 font-mono mt-1 break-all" id="addrHash"></p>
                 </div>
                 <span id="addrCategory" class="badge">-</span>
             </div>
             <div class="card-body">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="text-center"><span class="stat-label">累计交易量</span><span class="stat-value" id="addrVolume">-</span></div>
-                    <div class="text-center"><span class="stat-label">交易笔数</span><span class="stat-value" id="addrTxCount">-</span></div>
-                    <div class="text-center"><span class="stat-label">盈利评分</span><span class="stat-value" id="addrProfit">-</span></div>
-                    <div class="text-center"><span class="stat-label">首次活跃</span><span class="stat-value" id="addrFirstSeen">-</span></div>
+                    <div class="text-center">
+                        <span class="stat-label">累计交易量</span>
+                        <span class="stat-value" id="addrVolume">-</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="stat-label">交易笔数</span>
+                        <span class="stat-value" id="addrTxCount">-</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="stat-label">盈利评分</span>
+                        <span class="stat-value" id="addrProfit">-</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="stat-label">首次活跃</span>
+                        <span class="stat-value text-base" id="addrFirstSeen">-</span>
+                    </div>
                 </div>
-                <div id="addrAiProfile" class="mt-3 text-sm text-gray-600 hidden"></div>
+                <div id="addrAiProfile" class="mt-4 ai-summary hidden"></div>
             </div>
         </div>
 
         <!-- Tx History -->
         <div class="card">
             <div class="card-header">
-                <h2 class="font-semibold">交易历史</h2>
+                <h2 class="font-semibold text-base">交易历史</h2>
             </div>
             <div id="addrTxList" class="divide-y divide-gray-100">
-                <div class="card-body text-center text-gray-400 text-sm">加载中...</div>
+                <div class="card-body text-center text-gray-400 text-sm py-10">加载中...</div>
             </div>
         </div>
     </main>
 
     <script>
+        // Search box handler
+        document.getElementById('searchBox')?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const q = e.target.value.trim();
+                if (q.startsWith('0x') && q.length === 42) window.location.href = `/address/${q}`;
+                else if (q.length === 66) window.open(`https://mantlescan.xyz/tx/${q}`, '_blank');
+            }
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+                e.preventDefault();
+                document.getElementById('searchBox')?.focus();
+            }
+        });
+
+        // Load address data
         const addr = window.location.pathname.split('/address/')[1];
         if (addr) {
-            fetch(`/api/address/${addr}/profile`).then(r=>r.json()).then(d=>{
+            fetch(`/api/address/${addr}/profile`).then(r => r.json()).then(d => {
                 if (d.error) return;
                 document.getElementById('addrHash').textContent = d.address;
                 document.getElementById('addrLabel').textContent = d.label || '地址详情';
-                document.getElementById('addrVolume').textContent = '$' + (d.total_volume_usd||0).toLocaleString();
+                document.getElementById('addrVolume').textContent = '$' + (d.total_volume_usd || 0).toLocaleString();
                 document.getElementById('addrTxCount').textContent = d.tx_count || 0;
-                document.getElementById('addrProfit').textContent = (d.profit_score||0).toFixed(1);
-                document.getElementById('addrFirstSeen').textContent = d.first_seen ? new Date(d.first_seen*1000).toLocaleDateString() : '-';
-                document.getElementById('addrCategory').textContent = d.category || 'normal';
+                document.getElementById('addrProfit').textContent = (d.profit_score || 0).toFixed(1);
+                document.getElementById('addrFirstSeen').textContent = d.first_seen
+                    ? new Date(d.first_seen * 1000).toLocaleDateString()
+                    : '-';
+                const catEl = document.getElementById('addrCategory');
+                catEl.textContent = d.category || 'normal';
+                if (d.category === 'whale') catEl.classList.add('badge-gradient');
                 if (d.ai_profile) {
-                    document.getElementById('addrAiProfile').textContent = d.ai_profile;
-                    document.getElementById('addrAiProfile').classList.remove('hidden');
+                    const el = document.getElementById('addrAiProfile');
+                    el.textContent = d.ai_profile;
+                    el.classList.remove('hidden');
                 }
-            });
-            fetch(`/api/address/${addr}/transactions`).then(r=>r.json()).then(d=>{
+            }).catch(() => {});
+
+            fetch(`/api/address/${addr}/transactions`).then(r => r.json()).then(d => {
                 const el = document.getElementById('addrTxList');
-                if (!d.transactions?.length) { el.innerHTML = '<div class="card-body text-center text-gray-400">暂无交易</div>'; return; }
-                el.innerHTML = d.transactions.map(tx => `
-                    <div class="card-body hover:bg-gray-50 cursor-pointer" onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
-                        <div class="flex justify-between text-sm">
-                            <span class="font-mono text-xs">${tx.tx_hash.slice(0,16)}...</span>
-                            <span class="${tx.is_whale_tx ? 'text-red-600 font-semibold' : ''}">${tx.value_native} ${tx.token}</span>
+                if (!d.transactions?.length) {
+                    el.innerHTML = '<div class="card-body text-center text-gray-400 py-10">暂无交易记录</div>';
+                    return;
+                }
+                el.innerHTML = d.transactions.map(tx => {
+                    const valueUsd = tx.value_usd || 0;
+                    const amtClass = valueUsd >= 10000 ? 'text-red-600 font-bold'
+                                   : valueUsd >= 100   ? 'text-amber-600 font-semibold'
+                                   : 'text-gray-600';
+                    return `
+                        <div class="row-item" onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
+                            <div class="flex items-center justify-between gap-4">
+                                <span class="font-mono-data text-xs text-gray-400 truncate">${tx.tx_hash.slice(0, 18)}...</span>
+                                <span class="font-mono-data text-sm ${amtClass} shrink-0">${tx.value_native} ${tx.token}</span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="badge">${tx.tx_type}</span>
+                                <span class="text-xs text-gray-400">${tx.protocol}</span>
+                                <span class="text-xs text-gray-400 ml-auto tabular-nums">${new Date(tx.timestamp * 1000).toLocaleString()}</span>
+                            </div>
+                            ${tx.ai_analysis ? `<div class="mt-2 text-xs text-blue-600/80 border border-blue-200 rounded-lg px-3 py-2 bg-blue-50/50"><span class="font-medium text-blue-600">AI:</span> ${tx.ai_analysis}</div>` : ''}
                         </div>
-                        <div class="text-xs text-gray-500 mt-1">${tx.tx_type} · ${tx.protocol} · ${new Date(tx.timestamp*1000).toLocaleString()}</div>
-                        ${tx.ai_analysis ? `<div class="text-xs text-blue-600 mt-1">${tx.ai_analysis}</div>` : ''}
-                    </div>
-                `).join('');
-            });
+                    `;
+                }).join('');
+            }).catch(() => {});
         }
     </script>
 </body>

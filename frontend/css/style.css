@@ -1,4 +1,7 @@
-/* MantleSentry — 白底专业风格 */
+/* MantleSentry — 白底专业风格
+   NOTE: @apply 不能在 Tailwind CDN 模式下的外部 CSS 里使用，
+   本文件全部改为原生 CSS。
+*/
 
 /* === Base === */
 body {
@@ -6,101 +9,329 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* ============================================================
+   CoinGecko-inspired 新增组件
+   ============================================================ */
+
+/* === 全局数据 Ticker Bar（仿 CoinGecko 顶部全局数据条）=== */
+.stats-ticker {
+    background: white;
+    border-bottom: 1px solid #f3f4f6;
+    padding: 0.3rem 0;
+    font-size: 0.72rem;
+    color: #6b7280;
+    overflow: hidden;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+.ticker-item {
+    white-space: nowrap;
+    padding: 0 0.5rem;
+}
+.ticker-item strong {
+    color: #111827;
+    font-weight: 600;
+}
+.ticker-price strong {
+    color: #059669;
+}
+.ticker-sep {
+    color: #d1d5db;
+    padding: 0 0.125rem;
+    flex-shrink: 0;
+}
+
+/* === Feed 筛选 Tab（仿 CoinGecko 分类 pill bar）=== */
+.feed-tabs {
+    display: flex;
+    gap: 0.25rem;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.625rem;
+    padding: 0.2rem;
+}
+.feed-tab {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #6b7280;
+    padding: 0.25rem 0.625rem;
+    border-radius: 0.45rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+.feed-tab:hover {
+    color: #111827;
+    background: #f3f4f6;
+}
+.feed-tab.active {
+    background: white;
+    color: #111827;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* === Tx 类型 Badge（彩色 pill，仿 CoinGecko category badge）=== */
+.badge-type-swap {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 0.125rem 0.45rem;
+    border-radius: 9999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.badge-type-transfer {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 0.125rem 0.45rem;
+    border-radius: 9999px;
+    background: #f0fdf4;
+    color: #15803d;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.badge-type-defi {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 0.125rem 0.45rem;
+    border-radius: 9999px;
+    background: #faf5ff;
+    color: #7e22ce;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.badge-type-bridge {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 0.125rem 0.45rem;
+    border-radius: 9999px;
+    background: #fff7ed;
+    color: #c2410c;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.badge-type-mint {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 0.125rem 0.45rem;
+    border-radius: 9999px;
+    background: #ecfeff;
+    color: #0e7490;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.badge-type-burn {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 0.125rem 0.45rem;
+    border-radius: 9999px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* === Whale 行高亮（amber 替代旧红色）=== */
+.row-item-whale {
+    border-left-color: #f59e0b !important;
+    background-color: rgba(255, 251, 235, 0.4);
+}
+
 /* === Nav === */
 .nav-link {
-    @apply text-sm text-gray-500 hover:text-gray-900 px-3 py-1.5 rounded-lg transition-all duration-150;
+    font-size: 0.875rem;
+    color: #6b7280;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+.nav-link:hover {
+    color: #111827;
+    background-color: rgba(243, 244, 246, 0.5);
 }
 .nav-link.active {
-    @apply text-gray-900 font-semibold bg-gray-100/80;
+    color: #111827;
+    font-weight: 600;
+    background-color: rgba(243, 244, 246, 0.8);
 }
 
 /* === Card === */
 .card {
-    @apply bg-white rounded-2xl overflow-hidden transition-shadow duration-300;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
 }
 .card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
 }
 .card-header {
-    @apply flex items-center justify-between px-6 py-4 border-b border-gray-100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
 }
 .card-body {
-    @apply px-6 py-4;
+    padding: 1rem 1.5rem;
 }
 
-/* === Row Items (Feed/Whale/Alert) === */
+/* === Row Items (Feed / Whale / Alert) === */
 .row-item {
-    @apply px-6 py-3.5 transition-all duration-200 cursor-pointer border-l-2 border-transparent;
+    display: block;
+    padding: 0.875rem 1.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+    color: inherit;
 }
 .row-item:hover {
-    @apply bg-gray-50/80;
+    background-color: rgba(249, 250, 251, 0.8);
     transform: translateX(2px);
 }
 .row-item-highlight {
-    @apply border-l-red-400 bg-red-50/30;
+    border-left-color: #f87171;
+    background-color: rgba(254, 242, 242, 0.3);
 }
 
 /* === Stat Cards === */
 .stat-card {
-    @apply bg-white rounded-2xl px-5 py-4 flex items-center gap-4 transition-all duration-300;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    background: white;
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 .stat-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
 }
+
 .stat-icon {
-    @apply w-10 h-10 rounded-xl flex items-center justify-center text-lg;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    flex-shrink: 0;
 }
-.stat-icon-indigo { @apply bg-indigo-50 text-indigo-500; }
-.stat-icon-emerald { @apply bg-emerald-50 text-emerald-500; }
-.stat-icon-blue { @apply bg-blue-50 text-blue-500; }
-.stat-icon-red { @apply bg-red-50 text-red-500; }
+.stat-icon-indigo { background: #eef2ff; color: #6366f1; }
+.stat-icon-emerald { background: #ecfdf5; color: #10b981; }
+.stat-icon-blue   { background: #eff6ff; color: #3b82f6; }
+.stat-icon-red    { background: #fffbeb; color: #d97706; }
 
 .stat-card-alert {
-    @apply stat-card cursor-pointer;
-    border: 1px solid rgba(239,68,68,0.15);
-    animation: pulse-glow-card 2.5s ease-in-out infinite;
+    background: white;
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 .stat-card-alert:hover {
-    @apply bg-red-50/50;
-}
-@keyframes pulse-glow-card {
-    0%, 100% { box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 0 rgba(239,68,68,0); }
-    50% { box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 12px rgba(239,68,68,0.1); }
+    background-color: rgba(255, 251, 235, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
 }
 
 .stat-label {
-    @apply text-xs text-gray-500 uppercase tracking-wider;
+    display: block;
+    font-size: 0.7rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 500;
 }
 .stat-value {
-    @apply text-xl font-bold text-gray-900 font-mono tabular-nums mt-0.5;
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.125rem;
+    font-family: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
 }
 .stat-card-alert .stat-value {
-    @apply text-red-700;
+    color: #92400e;
 }
 
 /* === Badges === */
 .badge {
-    @apply text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium;
+    display: inline-block;
+    font-size: 0.625rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    background: #f3f4f6;
+    color: #4b5563;
+    font-weight: 500;
+    line-height: 1.5;
 }
 .badge-gradient {
-    @apply text-[10px] px-2 py-0.5 rounded-full text-white font-semibold;
+    display: inline-block;
+    font-size: 0.625rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    color: white;
+    font-weight: 600;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    line-height: 1.5;
 }
 .badge-red {
-    @apply text-[10px] px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-semibold;
+    display: inline-block;
+    font-size: 0.625rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    background: #fef3c7;
+    color: #92400e;
+    font-weight: 600;
+    line-height: 1.5;
 }
-.badge-severity-high { @apply bg-red-100 text-red-700; }
-.badge-severity-medium { @apply bg-amber-100 text-amber-700; }
-.badge-severity-low { @apply bg-gray-100 text-gray-600; }
+.badge-severity-high   { background: #fef3c7; color: #92400e; }
+.badge-severity-medium { background: #eff6ff; color: #1d4ed8; }
+.badge-severity-low    { background: #f3f4f6; color: #4b5563; }
 
 /* === Table Header === */
 .table-header {
-    @apply grid items-center px-6 py-3 bg-gray-50/80 text-[11px] font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100;
+    display: grid;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: rgba(249, 250, 251, 0.8);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+/* analysis.html whale table <th> */
+.th {
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-align: left;
+    white-space: nowrap;
 }
 
 /* === Typography === */
@@ -108,37 +339,57 @@ body {
     font-family: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
 }
 
-/* === Amount Colors === */
-.amt-low { @apply text-gray-400; }
-.amt-mid { @apply text-amber-600 font-semibold; }
-.amt-high { @apply text-red-600 font-bold; }
+/* === Amount Colors（金融惯例：绿色系表示大额显著）=== */
+.amt-low   { color: #9ca3af; }
+.amt-mid   { color: #0284c7; font-weight: 600; }   /* 蓝：中等金额 */
+.amt-high  { color: #059669; font-weight: 700; }   /* 绿：大额 */
+.amt-whale { color: #7c3aed; font-weight: 700; }   /* 紫：巨额 whale */
 
 /* === Alert Severity Borders === */
-.severity-high { @apply border-l-red-500; }
-.severity-medium { @apply border-l-amber-400; }
-.severity-low { @apply border-l-gray-300; }
+.severity-high   { border-left-color: #f59e0b !important; }
+.severity-medium { border-left-color: #93c5fd !important; }
+.severity-low    { border-left-color: #d1d5db !important; }
 
 /* === Search Box === */
 #searchBox {
-    @apply border-2 border-gray-200 rounded-full px-5 py-2 text-sm w-72 bg-gray-50/50;
-    @apply focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 focus:bg-white;
+    border: 2px solid #e5e7eb;
+    border-radius: 9999px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    width: 18rem;
+    background: rgba(249, 250, 251, 0.5);
+    outline: none;
     transition: all 0.2s ease;
+}
+#searchBox:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+    background: white;
 }
 
 /* === Alert Banner === */
 .alert-banner {
-    @apply text-white px-6 py-2.5 text-sm flex items-center gap-2 cursor-pointer;
-    background: linear-gradient(135deg, #dc2626, #ef4444);
-    animation: pulse-banner 2.5s ease-in-out infinite;
-}
-@keyframes pulse-banner {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.92; }
+    color: #78350f;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.8125rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    background: #fffbeb;
+    border-bottom: 1px solid #fde68a;
 }
 
 /* === AI Summary === */
 .ai-summary {
-    @apply border-l-4 border-blue-400 bg-blue-50/60 px-5 py-4 rounded-r-xl text-sm text-gray-700 leading-relaxed;
+    border-left: 4px solid #60a5fa;
+    background: rgba(239, 246, 255, 0.6);
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.75rem 0.75rem 0;
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.65;
+    margin: 1rem 1.5rem;
 }
 
 /* === Scrollbar === */
@@ -150,20 +401,17 @@ body {
 /* === Animations === */
 @keyframes slideIn {
     from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
 }
-.animate-slide-in {
-    animation: slideIn 0.25s ease-out;
-}
+.animate-slide-in { animation: slideIn 0.25s ease-out; }
+
 @keyframes highlightFlash {
-    0% { background-color: rgba(99,102,241,0.08); }
+    0%   { background-color: rgba(99, 102, 241, 0.08); }
     100% { background-color: transparent; }
 }
-.animate-highlight {
-    animation: highlightFlash 0.6s ease-out;
-}
+.animate-highlight { animation: highlightFlash 0.6s ease-out; }
 
 /* === Rank Change === */
-.rank-up { @apply text-emerald-500 text-xs font-medium; }
-.rank-down { @apply text-red-500 text-xs font-medium; }
-.rank-same { @apply text-gray-400 text-xs; }
+.rank-up   { color: #10b981; font-size: 0.75rem; font-weight: 500; }
+.rank-down { color: #ef4444; font-size: 0.75rem; font-weight: 500; }
+.rank-same { color: #9ca3af; font-size: 0.75rem; }

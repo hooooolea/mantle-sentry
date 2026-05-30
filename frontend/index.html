@@ -9,8 +9,27 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
+
+    <!-- ① + ② 整体 sticky 壳：ticker + nav 一起吸顶 -->
+    <div class="sticky top-0 z-50">
+
+    <!-- CoinGecko-style 全局数据 Ticker Bar -->
+    <div class="stats-ticker">
+        <div class="max-w-[1400px] mx-auto px-6 flex items-center gap-1 overflow-x-auto whitespace-nowrap">
+            <span class="ticker-item">交易数 <strong id="tickerTx">—</strong></span>
+            <span class="ticker-sep">·</span>
+            <span class="ticker-item">24h 量 <strong id="tickerVol">—</strong></span>
+            <span class="ticker-sep">·</span>
+            <span class="ticker-item">活跃地址 <strong id="tickerAddr">—</strong></span>
+            <span class="ticker-sep">·</span>
+            <span class="ticker-item">Whale 笔 <strong id="tickerWhale">—</strong></span>
+            <span class="ticker-sep">·</span>
+            <span class="ticker-item ticker-price">MNT <strong id="tickerMntPrice">$0.64</strong></span>
+        </div>
+    </div>
+
     <!-- Nav -->
-    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
         <div class="flex items-center gap-2">
             <a href="/" class="text-lg font-bold text-gray-900 mr-4">MantleSentry</a>
             <a href="/" class="nav-link active">Dashboard</a>
@@ -18,72 +37,85 @@
         </div>
         <div class="flex items-center gap-3">
             <input type="text" id="searchBox" placeholder="搜索地址/交易哈希... (Enter)">
-            <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-gray-400" title="连接状态"></span>
+            <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-gray-300" title="连接状态"></span>
         </div>
     </nav>
 
-    <!-- Alert Banner -->
+    </div><!-- /sticky wrapper -->
+
+    <!-- ③ Alert Banner -->
     <div id="alertBanner" class="alert-banner hidden" onclick="document.getElementById('alertSection').scrollIntoView({behavior:'smooth'})">
-        <span class="font-semibold">⚠ 异常预警</span>
-        <span id="alertBannerCount">0</span> 条新预警，点击查看
+        <span>⚠</span>
+        <span><strong id="alertBannerCount">0</strong> 条新预警，点击查看</span>
     </div>
 
     <div class="max-w-[1400px] mx-auto px-6 py-5 space-y-5">
 
-        <!-- Stats Row -->
+        <!-- ④ Stats Cards -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="stat-card">
                 <div class="stat-icon stat-icon-indigo">⚡</div>
                 <div>
                     <div class="stat-label">总交易数</div>
-                    <div class="stat-value" id="statTxCount">-</div>
+                    <div class="stat-value" id="statTxCount">—</div>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon stat-icon-emerald">💰</div>
+                <div class="stat-icon stat-icon-emerald">📊</div>
                 <div>
                     <div class="stat-label">总交易量</div>
-                    <div class="stat-value" id="statVolume">-</div>
+                    <div class="stat-value" id="statVolume">—</div>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon stat-icon-blue">👥</div>
                 <div>
                     <div class="stat-label">活跃地址</div>
-                    <div class="stat-value" id="statAddresses">-</div>
+                    <div class="stat-value" id="statAddresses">—</div>
                 </div>
             </div>
             <div class="stat-card-alert" onclick="document.getElementById('alertSection').scrollIntoView({behavior:'smooth'})">
-                <div class="stat-icon stat-icon-red">⚠️</div>
+                <div class="stat-icon stat-icon-red">🔔</div>
                 <div>
                     <div class="stat-label">异常预警</div>
-                    <div class="stat-value" id="statAlerts">-</div>
+                    <div class="stat-value" id="statAlerts">—</div>
                 </div>
             </div>
         </div>
 
-        <!-- Main Grid -->
+        <!-- ⑤ Main Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
             <!-- Left: Feed + Alerts -->
             <div class="lg:col-span-2 space-y-5">
+
                 <!-- Feed Card -->
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="font-semibold text-base">实时交易 Feed</h2>
                         <div class="flex items-center gap-3">
-                            <span class="text-xs text-gray-500 font-mono-data" id="txCount">0 笔</span>
-                            <button id="pauseBtn" onclick="togglePause()" class="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors text-gray-500">暂停</button>
+                            <h2 class="font-semibold text-base">实时交易 Feed</h2>
+                            <span class="text-xs text-gray-400 font-mono-data" id="txCount">0 笔</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <!-- ⑥ CoinGecko-style 类型筛选 Tab -->
+                            <div class="feed-tabs">
+                                <button class="feed-tab active" data-filter="all">全部</button>
+                                <button class="feed-tab" data-filter="whale">🐋 Whale</button>
+                                <button class="feed-tab" data-filter="swap">Swap</button>
+                                <button class="feed-tab" data-filter="transfer">转账</button>
+                            </div>
+                            <button id="pauseBtn" onclick="togglePause()" class="text-xs px-2.5 py-1 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-500 transition-colors">暂停</button>
                         </div>
                     </div>
                     <!-- Table Header -->
                     <div class="table-header grid-cols-12 gap-3">
-                        <div class="col-span-2">交易哈希</div>
-                        <div class="col-span-4">交易路径</div>
+                        <div class="col-span-2">哈希</div>
+                        <div class="col-span-4">路径</div>
                         <div class="col-span-2 text-right">金额</div>
                         <div class="col-span-2">类型</div>
                         <div class="col-span-2 text-right">时间</div>
                     </div>
-                    <div id="txFeed" class="max-h-[420px] overflow-y-auto divide-y divide-gray-100/80">
+                    <div id="txFeed" class="max-h-[420px] overflow-y-auto divide-y divide-gray-100">
                         <div class="px-6 py-10 text-center text-gray-400 text-sm">等待区块数据...</div>
                     </div>
                 </div>
@@ -94,7 +126,7 @@
                         <h2 class="font-semibold text-base">异常预警</h2>
                         <span class="badge-red hidden" id="alertBadge">0</span>
                     </div>
-                    <div id="alertList" class="max-h-[280px] overflow-y-auto divide-y divide-gray-100/80">
+                    <div id="alertList" class="max-h-[280px] overflow-y-auto divide-y divide-gray-100">
                         <div class="px-6 py-10 text-center text-gray-400 text-sm">暂无预警</div>
                     </div>
                 </div>
@@ -104,6 +136,7 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="font-semibold text-base">聪明钱 Top 10</h2>
+                    <span class="badge">实时</span>
                 </div>
                 <!-- Table Header -->
                 <div class="table-header grid-cols-12 gap-2">
@@ -112,7 +145,7 @@
                     <div class="col-span-2">类型</div>
                     <div class="col-span-5 text-right">交易量</div>
                 </div>
-                <div id="whaleList" class="divide-y divide-gray-100/80">
+                <div id="whaleList" class="divide-y divide-gray-100">
                     <div class="px-6 py-10 text-center text-gray-400 text-sm">加载中...</div>
                 </div>
             </div>

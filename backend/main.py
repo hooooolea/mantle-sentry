@@ -125,8 +125,10 @@ async def _ai_and_broadcast(tx: dict, db):
                 "from": tx["from_address"],
                 "to": tx.get("to_address"),
                 "value": tx["value_native"],
+                "value_usd": tx.get("value_usd", 0),
                 "token": tx.get("token", "MNT"),
                 "type": tx["tx_type"],
+                "protocol": tx.get("protocol", "unknown"),
                 "ai_analysis": analysis,
                 "is_whale": True,
             }
