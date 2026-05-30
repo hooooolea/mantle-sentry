@@ -12,7 +12,7 @@ from backend.models.database import init_db
 from backend.scanner.block_scanner import BlockScanner
 from backend.scanner.tx_classifier import classify_tx
 from backend.analyzer.whale_detector import is_whale_transaction, update_address_stats
-from backend.analyzer.anomaly import check_anomaly, save_alerts
+from backend.analyzer.anomaly import check_anomaly, save_alerts, deduplicate_alerts
 from backend.analyzer.ai_analyzer import analyze_transaction, generate_daily_summary
 from backend.config import SCAN_INTERVAL_SECONDS, WHALE_THRESHOLD_USD
 from backend.scanner.price_fetcher import get_mnt_price
@@ -212,6 +212,9 @@ async def daily_summary_loop():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
+    # Clean up duplicate alerts on startup
+    from backend.models.database import get_db
+    deduplicate_alerts(get_db())
     scan_task = asyncio.create_task(scan_loop())
     summary_task = asyncio.create_task(daily_summary_loop())
     logger.info("MantleSentry started — scanning Mantle blocks...")
