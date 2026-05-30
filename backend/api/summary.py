@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter, Query
 from backend.models.database import get_db
+from backend.scanner.price_fetcher import get_mnt_price_sync
 
 router = APIRouter(tags=["summary"])
 
@@ -28,3 +29,8 @@ def latest_summary():
     if not row:
         return {"message": "no summaries yet"}
     return dict(row)
+
+
+@router.get("/price/mnt")
+def mnt_price():
+    return {"price": get_mnt_price_sync()}

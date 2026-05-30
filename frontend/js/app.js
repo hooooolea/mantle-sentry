@@ -211,6 +211,18 @@ function updateTicker(txs, whales) {
     document.getElementById('tickerWhale').textContent = whaleTxs.toLocaleString();
 }
 
+// ── MNT 价格轮询（每 60 秒）
+async function updateMntPrice() {
+    try {
+        const data = await fetch('/api/price/mnt').then(r => r.json());
+        if (data.price) {
+            document.getElementById('tickerMntPrice').textContent = '$' + data.price.toFixed(4);
+        }
+    } catch (e) {}
+}
+updateMntPrice();
+setInterval(updateMntPrice, 60000);
+
 // ── 初始数据加载
 async function loadInitialData() {
     // Whales

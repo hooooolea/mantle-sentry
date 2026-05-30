@@ -13,7 +13,7 @@ from backend.scanner.block_scanner import BlockScanner
 from backend.scanner.tx_classifier import classify_tx
 from backend.analyzer.whale_detector import is_whale_transaction, update_address_stats
 from backend.analyzer.anomaly import check_anomaly, save_alerts
-from backend.analyzer.ai_analyzer import analyze_transaction
+from backend.analyzer.ai_analyzer import analyze_transaction, generate_daily_summary
 from backend.config import SCAN_INTERVAL_SECONDS, WHALE_THRESHOLD_USD
 from backend.scanner.price_fetcher import get_mnt_price
 from backend.api import transactions, addresses, alerts, summary
@@ -135,13 +135,89 @@ async def _ai_and_broadcast(tx: dict, db):
         })
 
 
+async def daily_summary_loop():
+    """Generate daily AI summary every hour."""
+    from backend.models.database import get_db
+    import time
+
+    while True:
+        try:
+            await asyncio.sleep(3600)  # every hour
+            db = get_db()
+            today = time.strftime("%Y-%m-%d")
+
+            # Check if already generated today
+            existing = db.execute(
+                "SELECT id FROM daily_summaries WHERE date = ?", (today,)
+            ).fetchone()
+            if existing:
+                db.close()
+                continue
+
+            # Aggregate 24h stats
+            now = int(time.time())
+            day_ago = now - 86400
+
+            txs = db.execute(
+                "SELECT * FROM transactions WHERE timestamp > ?", (day_ago,)
+            ).fetchall()
+
+            if not txs:
+                db.close()
+                continue
+
+            total_volume = sum(t["value_usd"] or 0 for t in txs)
+            whale_txs = [t for t in txs if t["is_whale_tx"]]
+
+            # Top whale moves
+            top_moves = ""
+            if whale_txs:
+                top_3 = sorted(whale_txs, key=lambda t: t["value_usd"] or 0, reverse=True)[:3]
+                top_moves = "; ".join(
+                    f"{t['from_address'][:8]}→{t['to_address'][:8] if t['to_address'] else '?'} "
+                    f"{t['value_native']:.0f} {t['token']} (${t['value_usd']:.0f})"
+                    for t in top_3
+                )
+
+            # Recent alerts
+            alerts_rows = db.execute(
+                "SELECT description FROM alerts WHERE created_at > datetime(?, 'unixepoch') LIMIT 5",
+                (day_ago,)
+            ).fetchall()
+            alerts_text = "; ".join(a["description"] for a in alerts_rows) if alerts_rows else "暂无"
+
+            # Generate summary
+            summary_text = await generate_daily_summary({
+                "total_volume": total_volume,
+                "whale_tx_count": len(whale_txs),
+                "top_moves": top_moves or "暂无",
+                "alerts": alerts_text,
+            })
+
+            if summary_text:
+                db.execute(
+                    """INSERT OR REPLACE INTO daily_summaries 
+                    (date, summary_text, top_whale_moves, total_volume, alert_count)
+                    VALUES (?, ?, ?, ?, ?)""",
+                    (today, summary_text, top_moves, total_volume, len(alerts_rows))
+                )
+                db.commit()
+                logger.info(f"Daily summary generated for {today}")
+
+            db.close()
+        except Exception as e:
+            logger.error(f"Daily summary error: {e}")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
-    task = asyncio.create_task(scan_loop())
+    scan_task = asyncio.create_task(scan_loop())
+    summary_task = asyncio.create_task(daily_summary_loop())
     logger.info("MantleSentry started — scanning Mantle blocks...")
     yield
-    task.cancel()
+    scan_task.cancel()
+    summary_task.cancel()
 
 
 app = FastAPI(title="MantleSentry", version="0.1.0", lifespan=lifespan)
