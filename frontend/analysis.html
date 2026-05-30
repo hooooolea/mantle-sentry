@@ -9,10 +9,15 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
-    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6">
-        <a href="/" class="text-lg font-bold text-gray-900">MantleSentry</a>
-        <a href="/" class="nav-link">Dashboard</a>
-        <a href="/analysis" class="nav-link active">分析</a>
+    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <a href="/" class="text-lg font-bold text-gray-900 mr-4">MantleSentry</a>
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/analysis" class="nav-link active">分析</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <input type="text" id="searchBox" placeholder="搜索地址或交易哈希...">
+        </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-4 py-4 space-y-4">

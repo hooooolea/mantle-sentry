@@ -1,14 +1,14 @@
 /* MantleSentry — 朴素白底风格 */
 
 .nav-link {
-    @apply text-sm text-gray-500 hover:text-gray-900 px-2 py-1;
+    @apply text-sm text-gray-500 hover:text-gray-900 px-3 py-1.5 rounded;
 }
 .nav-link.active {
-    @apply text-gray-900 font-semibold border-b-2 border-gray-900;
+    @apply text-gray-900 font-semibold bg-gray-100;
 }
 
 .card {
-    @apply bg-white rounded-lg border border-gray-200 shadow-sm;
+    @apply bg-white rounded-lg border border-gray-200;
 }
 .card-header {
     @apply flex items-center justify-between px-4 py-3 border-b border-gray-100;
@@ -22,6 +22,20 @@
 }
 .stat-value {
     @apply block text-base font-semibold text-gray-900 mt-0.5;
+}
+
+/* Stat card variants */
+.stat-card {
+    @apply bg-white rounded-lg border border-gray-200 px-4 py-3 text-center;
+}
+.stat-card-alert {
+    @apply bg-red-50 rounded-lg border border-red-200 px-4 py-3 text-center cursor-pointer;
+}
+.stat-card-alert:hover {
+    @apply bg-red-100;
+}
+.stat-card-alert .stat-value {
+    @apply text-red-700;
 }
 
 .badge {
@@ -79,3 +93,31 @@ a[href^="/address/"]:hover .font-mono,
 .feed-item-new:hover::after {
     opacity: 1;
 }
+
+/* Search box */
+#searchBox {
+    @apply border-2 border-gray-300 rounded-full px-4 py-1.5 text-sm w-64;
+    @apply focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200;
+}
+
+/* Amount color tiers */
+.amt-low { @apply text-gray-600; }
+.amt-mid { @apply text-orange-600 font-medium; }
+.amt-high { @apply text-red-600 font-bold; }
+
+/* Alert banner */
+.alert-banner {
+    @apply bg-red-50 border-b border-red-200 px-6 py-2 text-sm text-red-800;
+    @apply flex items-center gap-2 cursor-pointer hover:bg-red-100;
+}
+
+/* Sparkline container */
+.sparkline {
+    width: 60px;
+    height: 20px;
+}
+
+/* Rank change */
+.rank-up { @apply text-green-600 text-xs; }
+.rank-down { @apply text-red-600 text-xs; }
+.rank-same { @apply text-gray-400 text-xs; }
