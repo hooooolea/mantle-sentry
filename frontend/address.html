@@ -9,13 +9,18 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
-    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6">
-        <a href="/" class="text-lg font-bold text-gray-900">MantleSentry</a>
-        <a href="/" class="nav-link">Dashboard</a>
-        <a href="/analysis" class="nav-link">分析</a>
+    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <a href="/" class="text-lg font-bold text-gray-900 mr-4">MantleSentry</a>
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/analysis" class="nav-link">分析</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <input type="text" id="searchBox" placeholder="搜索地址/交易哈希... (Enter)">
+        </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-4 py-6 space-y-4">
+    <main class="max-w-5xl mx-auto px-6 py-6 space-y-6">
         <!-- Back link -->
         <div class="flex items-center gap-2 text-sm text-gray-500">
             <a href="/" class="hover:text-blue-600">← 返回 Dashboard</a>
@@ -23,20 +28,22 @@
 
         <!-- Profile Card -->
         <div class="card">
-            <div class="flex items-start justify-between">
+            <div class="card-header">
                 <div>
                     <h1 class="text-lg font-bold" id="addrLabel">地址详情</h1>
                     <p class="text-xs text-gray-500 font-mono mt-1" id="addrHash"></p>
                 </div>
                 <span id="addrCategory" class="badge">-</span>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                <div><span class="stat-label">累计交易量</span><span class="stat-value" id="addrVolume">-</span></div>
-                <div><span class="stat-label">交易笔数</span><span class="stat-value" id="addrTxCount">-</span></div>
-                <div><span class="stat-label">盈利评分</span><span class="stat-value" id="addrProfit">-</span></div>
-                <div><span class="stat-label">首次活跃</span><span class="stat-value" id="addrFirstSeen">-</span></div>
+            <div class="card-body">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center"><span class="stat-label">累计交易量</span><span class="stat-value" id="addrVolume">-</span></div>
+                    <div class="text-center"><span class="stat-label">交易笔数</span><span class="stat-value" id="addrTxCount">-</span></div>
+                    <div class="text-center"><span class="stat-label">盈利评分</span><span class="stat-value" id="addrProfit">-</span></div>
+                    <div class="text-center"><span class="stat-label">首次活跃</span><span class="stat-value" id="addrFirstSeen">-</span></div>
+                </div>
+                <div id="addrAiProfile" class="mt-3 text-sm text-gray-600 hidden"></div>
             </div>
-            <div id="addrAiProfile" class="mt-3 text-sm text-gray-600 hidden"></div>
         </div>
 
         <!-- Tx History -->
@@ -45,7 +52,7 @@
                 <h2 class="font-semibold">交易历史</h2>
             </div>
             <div id="addrTxList" class="divide-y divide-gray-100">
-                <div class="p-4 text-center text-gray-400 text-sm">加载中...</div>
+                <div class="card-body text-center text-gray-400 text-sm">加载中...</div>
             </div>
         </div>
     </main>
@@ -69,9 +76,9 @@
             });
             fetch(`/api/address/${addr}/transactions`).then(r=>r.json()).then(d=>{
                 const el = document.getElementById('addrTxList');
-                if (!d.transactions?.length) { el.innerHTML = '<div class="p-4 text-center text-gray-400">暂无交易</div>'; return; }
+                if (!d.transactions?.length) { el.innerHTML = '<div class="card-body text-center text-gray-400">暂无交易</div>'; return; }
                 el.innerHTML = d.transactions.map(tx => `
-                    <div class="p-3 hover:bg-gray-50 cursor-pointer" onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
+                    <div class="card-body hover:bg-gray-50 cursor-pointer" onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
                         <div class="flex justify-between text-sm">
                             <span class="font-mono text-xs">${tx.tx_hash.slice(0,16)}...</span>
                             <span class="${tx.is_whale_tx ? 'text-red-600 font-semibold' : ''}">${tx.value_native} ${tx.token}</span>
