@@ -18,10 +18,10 @@
 }
 
 .stat-label {
-    @apply block text-xs text-gray-500;
+    @apply block text-xs text-gray-500 text-center;
 }
 .stat-value {
-    @apply block text-base font-semibold text-gray-900 mt-0.5;
+    @apply block text-base font-semibold text-gray-900 mt-0.5 text-center;
 }
 
 /* Stat card variants */
