@@ -37,7 +37,7 @@ function txItemHTML(tx) {
 
     return `
         <div class="feed-item-new cursor-pointer" onclick="window.open('https://mantlescan.xyz/tx/${tx.tx_hash}','_blank')">
-            <div class="grid grid-cols-12 gap-3 items-center px-6 py-3">
+            <div class="grid grid-cols-12 gap-3 items-center px-8 py-4">
                 <div class="col-span-2">
                     <span class="font-mono text-xs text-gray-400" title="${tx.tx_hash}">${hash}...</span>
                 </div>
@@ -69,7 +69,7 @@ function alertItemHTML(a) {
         ? `<a href="/address/${a.address}" class="text-blue-600 hover:underline">${a.address.slice(0, 12)}...</a>`
         : '';
     return `
-        <div class="px-6 py-3 ${sevClass}">
+        <div class="px-8 py-4 ${sevClass}">
             <div class="flex justify-between items-start">
                 <span class="text-sm font-medium">${a.description || a.alert_type}</span>
                 <span class="text-xs text-gray-400 shrink-0 ml-3">${time}</span>
@@ -92,7 +92,7 @@ function whaleItemHTML(w, rank) {
     const vol = w.total_volume_usd || 0;
 
     return `
-        <a href="/address/${w.address}" class="grid grid-cols-12 gap-2 items-center px-5 py-3 hover:bg-gray-50/80 transition-colors group">
+        <a href="/address/${w.address}" class="grid grid-cols-12 gap-2 items-center px-6 py-3.5 hover:bg-gray-50/80 transition-colors group">
             <div class="col-span-1 flex items-center gap-1">
                 <span class="text-xs text-gray-400 font-medium">${rank}</span>
                 ${rankChange}
