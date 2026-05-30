@@ -13,6 +13,9 @@ def list_transactions(
     min_value: float = Query(0, ge=0),
 ):
     db = get_db()
+    total = db.execute(
+        "SELECT COUNT(*) FROM transactions WHERE value_usd >= ?", (min_value,)
+    ).fetchone()[0]
     rows = db.execute(
         """SELECT * FROM transactions 
         WHERE value_usd >= ? 
@@ -21,7 +24,7 @@ def list_transactions(
         (min_value, limit, offset)
     ).fetchall()
     db.close()
-    return {"transactions": [dict(r) for r in rows]}
+    return {"transactions": [dict(r) for r in rows], "total": total}
 
 
 @router.get("/transactions/whale")

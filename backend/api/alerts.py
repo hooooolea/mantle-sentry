@@ -13,17 +13,21 @@ def list_alerts(
 ):
     db = get_db()
     if severity:
+        total = db.execute(
+            "SELECT COUNT(*) FROM alerts WHERE severity = ?", (severity,)
+        ).fetchone()[0]
         rows = db.execute(
             "SELECT * FROM alerts WHERE severity = ? ORDER BY created_at DESC LIMIT ?",
             (severity, limit)
         ).fetchall()
     else:
+        total = db.execute("SELECT COUNT(*) FROM alerts").fetchone()[0]
         rows = db.execute(
             "SELECT * FROM alerts ORDER BY created_at DESC LIMIT ?",
             (limit,)
         ).fetchall()
     db.close()
-    return {"alerts": [dict(r) for r in rows]}
+    return {"alerts": [dict(r) for r in rows], "total": total}
 
 
 @router.get("/alerts/unread")

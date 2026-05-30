@@ -268,10 +268,10 @@ async function loadInitialData() {
         ]);
         const txs        = txData.transactions || [];
         const totalVolume = txs.reduce((s, t) => s + (t.value_usd || 0), 0);
-        document.getElementById('statTxCount').textContent  = txs.length.toLocaleString();
+        document.getElementById('statTxCount').textContent  = (txData.total || txs.length).toLocaleString();
         document.getElementById('statVolume').textContent   = '$' + totalVolume.toLocaleString(undefined, {maximumFractionDigits: 0});
         document.getElementById('statAddresses').textContent = (whaleData.whales || []).length;
-        document.getElementById('statAlerts').textContent   = (alertData.alerts || []).length;
+        document.getElementById('statAlerts').textContent   = alertData.total || (alertData.alerts || []).length;
         updateTicker(txs, whaleData.whales || []);
     } catch (e) {}
 }
