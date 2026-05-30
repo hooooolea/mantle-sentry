@@ -28,46 +28,41 @@
         <span id="alertBannerCount">0</span> 条新预警，点击查看
     </div>
 
-    <!-- Stats Bar -->
-    <div class="max-w-7xl mx-auto px-6 pt-5">
+    <div class="max-w-7xl mx-auto px-6 py-5 space-y-5">
+
+        <!-- Stats Bar -->
         <div class="grid grid-cols-4 gap-4">
             <div class="stat-card">
-                <div class="flex items-center justify-center gap-1.5">
-                    <span class="text-base">⚡</span>
-                    <span class="stat-label">总交易数</span>
+                <div class="flex items-center justify-center gap-1.5 mb-1">
+                    <span>⚡</span><span class="stat-label">总交易数</span>
                 </div>
                 <div class="stat-value" id="statTxCount">-</div>
             </div>
             <div class="stat-card">
-                <div class="flex items-center justify-center gap-1.5">
-                    <span class="text-base">💰</span>
-                    <span class="stat-label">总交易量</span>
+                <div class="flex items-center justify-center gap-1.5 mb-1">
+                    <span>💰</span><span class="stat-label">总交易量</span>
                 </div>
                 <div class="stat-value" id="statVolume">-</div>
             </div>
             <div class="stat-card">
-                <div class="flex items-center justify-center gap-1.5">
-                    <span class="text-base">👥</span>
-                    <span class="stat-label">活跃地址</span>
+                <div class="flex items-center justify-center gap-1.5 mb-1">
+                    <span>👥</span><span class="stat-label">活跃地址</span>
                 </div>
                 <div class="stat-value" id="statAddresses">-</div>
             </div>
             <div class="stat-card-alert" onclick="document.getElementById('alertSection').scrollIntoView({behavior:'smooth'})">
-                <div class="flex items-center justify-center gap-1.5">
-                    <span class="text-base">⚠️</span>
-                    <span class="stat-label">异常预警</span>
+                <div class="flex items-center justify-center gap-1.5 mb-1">
+                    <span>⚠️</span><span class="stat-label">异常预警</span>
                 </div>
                 <div class="stat-value" id="statAlerts">-</div>
             </div>
         </div>
-    </div>
 
-    <!-- Main -->
-    <main class="max-w-7xl mx-auto px-6 py-5">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            <!-- Left: Feed + Alerts -->
-            <div class="lg:col-span-2 flex flex-col gap-5">
-                <!-- Feed -->
+        <!-- Main: 3:1 ratio -->
+        <div class="grid grid-cols-4 gap-5">
+            
+            <!-- Feed (3 cols) -->
+            <div class="col-span-3 flex flex-col gap-5">
                 <div class="card">
                     <div class="card-header">
                         <h2 class="font-semibold">实时交易 Feed</h2>
@@ -81,7 +76,6 @@
                     </div>
                 </div>
 
-                <!-- Alerts -->
                 <div class="card" id="alertSection">
                     <div class="card-header">
                         <h2 class="font-semibold">异常预警</h2>
@@ -93,7 +87,7 @@
                 </div>
             </div>
 
-            <!-- Right: Whale Top 10 -->
+            <!-- Whale (1 col) -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="font-semibold">聪明钱 Top 10</h2>
@@ -103,7 +97,7 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script src="/static/js/websocket.js"></script>
     <script src="/static/js/app.js"></script>
