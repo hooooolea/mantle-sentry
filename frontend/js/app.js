@@ -237,13 +237,14 @@ async function loadInitialData() {
 
     // Alerts
     try {
-        const data = await fetch('/api/alerts?limit=10').then(r => r.json());
+        const data = await fetch('/api/alerts?limit=50').then(r => r.json());
         const el   = document.getElementById('alertList');
         if (data.alerts?.length) {
             el.innerHTML = data.alerts.map(alertItemHTML).join('');
-            document.getElementById('alertBadge').textContent = data.alerts.length;
+            const total = data.total || data.alerts.length;
+            document.getElementById('alertBadge').textContent = total;
             document.getElementById('alertBadge').classList.remove('hidden');
-            document.getElementById('alertBannerCount').textContent = data.alerts.length;
+            document.getElementById('alertBannerCount').textContent = total;
             document.getElementById('alertBanner').classList.remove('hidden');
         }
     } catch (e) {}
