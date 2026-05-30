@@ -17,12 +17,12 @@
             <a href="/analysis" class="nav-link">分析</a>
         </div>
         <div class="flex items-center gap-3">
-            <input type="text" id="searchBox" placeholder="搜索地址或交易哈希...">
+            <input type="text" id="searchBox" placeholder="搜索地址/交易哈希... (Enter)">
             <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-gray-400" title="连接状态"></span>
         </div>
     </nav>
 
-    <!-- Alert Banner (hidden by default, shows when alerts > 0) -->
+    <!-- Alert Banner -->
     <div id="alertBanner" class="alert-banner hidden" onclick="document.getElementById('alertSection').scrollIntoView({behavior:'smooth'})">
         <span class="font-semibold">⚠ 异常预警</span>
         <span id="alertBannerCount">0</span> 条新预警，点击查看
@@ -32,31 +32,42 @@
     <div class="max-w-7xl mx-auto px-6 pt-5">
         <div class="grid grid-cols-4 gap-4">
             <div class="stat-card">
-                <div class="stat-label">总交易数</div>
+                <div class="flex items-center justify-center gap-1.5">
+                    <span class="text-base">⚡</span>
+                    <span class="stat-label">总交易数</span>
+                </div>
                 <div class="stat-value" id="statTxCount">-</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">总交易量</div>
+                <div class="flex items-center justify-center gap-1.5">
+                    <span class="text-base">💰</span>
+                    <span class="stat-label">总交易量</span>
+                </div>
                 <div class="stat-value" id="statVolume">-</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">活跃地址</div>
+                <div class="flex items-center justify-center gap-1.5">
+                    <span class="text-base">👥</span>
+                    <span class="stat-label">活跃地址</span>
+                </div>
                 <div class="stat-value" id="statAddresses">-</div>
             </div>
             <div class="stat-card-alert" onclick="document.getElementById('alertSection').scrollIntoView({behavior:'smooth'})">
-                <div class="stat-label">异常预警</div>
+                <div class="flex items-center justify-center gap-1.5">
+                    <span class="text-base">⚠️</span>
+                    <span class="stat-label">异常预警</span>
+                </div>
                 <div class="stat-value" id="statAlerts">-</div>
             </div>
         </div>
     </div>
 
-    <!-- Main: left 2/3 + right 1/3 -->
+    <!-- Main -->
     <main class="max-w-7xl mx-auto px-6 py-5">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            
             <!-- Left: Feed + Alerts -->
             <div class="lg:col-span-2 flex flex-col gap-5">
-                <!-- Real-time Feed -->
+                <!-- Feed -->
                 <div class="card">
                     <div class="card-header">
                         <h2 class="font-semibold">实时交易 Feed</h2>
