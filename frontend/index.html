@@ -33,27 +33,19 @@
         <!-- Stats Bar -->
         <div class="grid grid-cols-4 gap-4">
             <div class="stat-card">
-                <div class="flex items-center justify-center gap-1.5 mb-1">
-                    <span>⚡</span><span class="stat-label">总交易数</span>
-                </div>
+                <div class="stat-label">⚡ 总交易数</div>
                 <div class="stat-value" id="statTxCount">-</div>
             </div>
             <div class="stat-card">
-                <div class="flex items-center justify-center gap-1.5 mb-1">
-                    <span>💰</span><span class="stat-label">总交易量</span>
-                </div>
+                <div class="stat-label">💰 总交易量</div>
                 <div class="stat-value" id="statVolume">-</div>
             </div>
             <div class="stat-card">
-                <div class="flex items-center justify-center gap-1.5 mb-1">
-                    <span>👥</span><span class="stat-label">活跃地址</span>
-                </div>
+                <div class="stat-label">👥 活跃地址</div>
                 <div class="stat-value" id="statAddresses">-</div>
             </div>
             <div class="stat-card-alert" onclick="document.getElementById('alertSection').scrollIntoView({behavior:'smooth'})">
-                <div class="flex items-center justify-center gap-1.5 mb-1">
-                    <span>⚠️</span><span class="stat-label">异常预警</span>
-                </div>
+                <div class="stat-label">⚠️ 异常预警</div>
                 <div class="stat-value" id="statAlerts">-</div>
             </div>
         </div>
